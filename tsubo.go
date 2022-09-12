@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-	// TODO オプションで変更できるようにする
 	port := flag.Int("port", 5963, "port")
 	flag.Parse()
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
