@@ -4,7 +4,9 @@
 
 5ちゃんねるの読み書き操作をラップしたAPIサーバ+Golangライブラリ
 
-- このソフトウェアは専ブラではありません
+素直に5ちゃんねるを操作しようとすると厳しいので、気持ちモダンな形で間に挟まるAPIサーバとして機能します
+
+- このソフトウェアは専ブラでもプロキシでもありません
 - [5ch.net 専用ブラウザの開発者の皆さまへ](https://developer.5ch.net/) にて禁止されている「5ch.netが提供するAPI」は使用しません
 
 ## サポート/TODO
@@ -21,6 +23,11 @@
 go install github.com/aethiopicuschan/tsubo@latest
 tsubo
 ```
+
+### エンドポイント例
+
+- `GET /bbsmenu`
+- `GET /subjects?board=https://greta.5ch.net/poverty/`
 
 ## Golangライブラリとして
 
