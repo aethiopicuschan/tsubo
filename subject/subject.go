@@ -28,7 +28,7 @@ func ikioi(res int, time int64, now time.Time) float32 {
 }
 
 func newSubject(src string) (subject Subject, err error) {
-	r := regexp.MustCompile(`([0-9]+\.dat)<>(.+)\s+\(([0-9]+)\)`)
+	r := regexp.MustCompile(`([0-9]+\.dat)<>(.+)\s+\(([0-9]+)\)$`)
 	if !r.MatchString(src) {
 		err = errors.New("illegal source")
 		return
@@ -44,15 +44,15 @@ func newSubject(src string) (subject Subject, err error) {
 		return
 	}
 	// BeIDとタイトル
-	r2 := regexp.MustCompile(`\s\s\[([0-9]{9})\]$`)
+	r2 := regexp.MustCompile(`\s+\[([0-9]+)\]$`)
 	a2 := r2.FindStringSubmatch(a[2])
 	if len(a2) > 0 {
 		subject.BeID = a2[1]
 		subject.Title = strings.Replace(a[2], fmt.Sprintf("  [%s]", a2[1]), "", -1)
 	} else {
-		subject.Title = a[2]
+		r3 := regexp.MustCompile(`\s$`)
+		subject.Title = r3.ReplaceAllString(a[2], "")
 	}
-	// 勢い
 	subject.Ikioi = ikioi(subject.ResNum, subject.Time, time.Now())
 	return
 }
