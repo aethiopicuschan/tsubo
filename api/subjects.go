@@ -4,12 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/aethiopicuschan/tsubo/subject"
 )
 
 func getSubjectsAPI(w http.ResponseWriter, r *http.Request) {
 	board := r.URL.Query().Get("board")
+	_, err := url.ParseRequestURI(board)
+	if err != nil {
+		responseError(w, r, http.StatusBadRequest, err)
+		return
+	}
 	sj, err := subject.Get(board)
 	if err != nil {
 		responseError(w, r, http.StatusBadGateway, err)
