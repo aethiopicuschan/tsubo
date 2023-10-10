@@ -6,7 +6,6 @@ import (
 	"strconv"
 )
 
-// 数値文字参照をデコードする
 func decodeNCR(source string) (result string) {
 	re := regexp.MustCompile("&#[0-9]+;|&#x[0-9a-fA-F]+;")
 	return re.ReplaceAllStringFunc(source, func(match string) string {

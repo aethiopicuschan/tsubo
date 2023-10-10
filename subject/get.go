@@ -11,7 +11,6 @@ import (
 	"github.com/aethiopicuschan/tsubo/decode"
 )
 
-// 引数の例: https://greta.5ch.net/poverty/
 func Get(board string) (subjects []Subject, err error) {
 	url, err := url.Parse(board)
 	if err != nil {
