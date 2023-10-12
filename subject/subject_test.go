@@ -1,73 +1,125 @@
 package subject_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/aethiopicuschan/tsubo/subject"
+	"github.com/motemen/go-testutil/dataloc"
 )
 
+func assertSubject(a subject.Subject, b subject.Subject) error {
+	if a.BeID != b.BeID {
+		return fmt.Errorf("BeID is wrong, want %s, got %s", a.BeID, b.BeID)
+	}
+	if a.Title != b.Title {
+		return fmt.Errorf("Title is wrong, want %s, got %s", a.Title, b.Title)
+	}
+	if a.Time != b.Time {
+		return fmt.Errorf("Time is wrong, want %d, got %d", a.Time, b.Time)
+	}
+	if a.ResNum != b.ResNum {
+		return fmt.Errorf("ResNum is wrong, want %d, got %d", a.ResNum, b.ResNum)
+	}
+	return nil
+}
+
 func TestNewSubject(t *testing.T) {
-	// 普通のソース
-	sj, err := subject.NewSubject("1660389180.dat<>(ヽ´ん`)「目を閉じて始めよう」  [697453962] (6)")
-	if err != nil {
-		t.Errorf("%s", err)
+	testcases := []struct {
+		name      string
+		src       string
+		expect    subject.Subject
+		expectErr bool
+	}{
+		{
+			name: "normal",
+			src:  "1660389180.dat<>(ヽ´ん`)「目を閉じて始めよう」  [697453962] (6)",
+			expect: subject.Subject{
+				BeID:   "697453962",
+				Title:  "(ヽ´ん`)「目を閉じて始めよう」",
+				Time:   1660389180,
+				ResNum: 6,
+			},
+		},
+		{
+			name: "confused",
+			src:  "9990000000.dat<>123.dat(81)[123456789]  [987654321] (100)",
+			expect: subject.Subject{
+				BeID:   "987654321",
+				Title:  "123.dat(81)[123456789]",
+				Time:   9990000000,
+				ResNum: 100,
+			},
+		},
+		{
+			name: "without_be",
+			src:  "1663155465.dat<>OPが良曲すぎた皆忘れてそうなアニメ  (133)",
+			expect: subject.Subject{
+				BeID:   "",
+				Title:  "OPが良曲すぎた皆忘れてそうなアニメ",
+				Time:   1663155465,
+				ResNum: 133,
+			},
+		},
+		{
+			name:      "invalid_time",
+			src:       "invalid.dat<>OPが良曲すぎた皆忘れてそうなアニメ  (133)",
+			expectErr: true,
+		},
+		{
+			name:      "invalid_resnum",
+			src:       "1663155465.dat<>OPが良曲すぎた皆忘れてそうなアニメ  (invalid)",
+			expectErr: true,
+		},
 	}
-	if sj.BeID != "697453962" {
-		t.Errorf("BeID is wrong, want \"697453962\", got %s", sj.BeID)
-	}
-	if sj.Title != "(ヽ´ん`)「目を閉じて始めよう」" {
-		t.Errorf("Title is wrong, want \"(ヽ´ん`)「目を閉じて始めよう」\", got \"%s\"", sj.Title)
-	}
-	if sj.Time != 1660389180 {
-		t.Errorf("Time is wrong, want 1660389180, got %d", sj.Time)
-	}
-	if sj.ResNum != 6 {
-		t.Errorf("ResNum is wrong, want 6, got %d", sj.ResNum)
-	}
-	// 怪しいソース
-	sj, err = subject.NewSubject("9990000000.dat<>123.dat(81)[123456789]  [987654321] (100)")
-	if err != nil {
-		t.Errorf("%s", err)
-	}
-	if sj.BeID != "987654321" {
-		t.Errorf("BeID is wrong, want \"987654321\", got %s", sj.BeID)
-	}
-	if sj.Title != "123.dat(81)[123456789]" {
-		t.Errorf("Title is wrong, want \"123.dat[123456789]\", got \"%s\"", sj.Title)
-	}
-	if sj.Time != 9990000000 {
-		t.Errorf("Time is wrong, want 9990000000, got %d", sj.Time)
-	}
-	if sj.ResNum != 100 {
-		t.Errorf("ResNum is wrong, want 100, got %d", sj.ResNum)
-	}
-	// Beなし
-	sj, err = subject.NewSubject("1663155465.dat<>OPが良曲すぎた皆忘れてそうなアニメ  (133)")
-	if err != nil {
-		t.Errorf("%s", err)
-	}
-	if sj.BeID != "" {
-		t.Errorf("BeID is wrong, want \"\", got %s", sj.BeID)
-	}
-	if sj.Title != "OPが良曲すぎた皆忘れてそうなアニメ" {
-		t.Errorf("Title is wrong, want \"OPが良曲すぎた皆忘れてそうなアニメ\", got \"%s\"", sj.Title)
-	}
-	if sj.Time != 1663155465 {
-		t.Errorf("Time is wrong, want 1663155465, got %d", sj.Time)
-	}
-	if sj.ResNum != 133 {
-		t.Errorf("ResNum is wrong, want 133, got %d", sj.ResNum)
+
+	for _, testcase := range testcases {
+		got, err := subject.NewSubject(testcase.src)
+		if testcase.expectErr {
+			if err == nil {
+				t.Error("want err")
+			}
+		} else {
+			if err != nil {
+				t.Errorf("not want err, got \"%s\"", err)
+			}
+		}
+
+		if err := assertSubject(testcase.expect, got); err != nil {
+			t.Errorf("%s, test case at %s", err, dataloc.L(testcase.name))
+		}
 	}
 }
 
 func TestIkioi(t *testing.T) {
-	ikioi := subject.Ikioi(139, 1660986000, time.Unix(1660989360, 0))
-	if ikioi != 3574.285645 {
-		t.Errorf("Ikioi is wrong, want 3574.285645, got %f", ikioi)
+	testcases := []struct {
+		name   string
+		res    int
+		time   int64
+		now    int64
+		expect float64
+	}{
+		{
+			name:   "normal",
+			res:    139,
+			time:   1660986000,
+			now:    1660989360,
+			expect: 139.0 / ((1660989360 - 1660986000) / 86400.0),
+		},
+		{
+			name:   "future",
+			res:    6,
+			time:   9245000000,
+			now:    1660989360,
+			expect: 0,
+		},
 	}
-	ikioi = subject.Ikioi(6, 9245000000, time.Unix(1660989360, 0))
-	if ikioi != 0 {
-		t.Errorf("Ikioi is wrong, want 0, got %f", ikioi)
+
+	for _, testcase := range testcases {
+		got := subject.Ikioi(testcase.res, testcase.time, time.Unix(testcase.now, 0))
+		if got != testcase.expect {
+			t.Errorf("want %f, got %f, test case at %s", testcase.expect, got, dataloc.L(testcase.name))
+		}
 	}
 }

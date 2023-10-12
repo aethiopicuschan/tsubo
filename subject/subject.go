@@ -15,16 +15,16 @@ type Subject struct {
 	ResNum int
 	Src    string
 	BeID   string
-	Ikioi  float32
+	Ikioi  float64
 }
 
 // 勢い計算 テスト可能にするため切り出し
-func ikioi(res int, time int64, now time.Time) float32 {
+func ikioi(res int, time int64, now time.Time) float64 {
 	// 「5ちゃんねるからのお知らせ」 などの特殊なスレッドで現在時刻を上回った値が設定されていることがある
 	if time > now.Unix() {
 		return 0
 	}
-	return float32(res) / (float32(now.Unix()-time) / 86400)
+	return float64(res) / (float64(now.Unix()-time) / 86400)
 }
 
 func newSubject(src string) (subject Subject, err error) {
