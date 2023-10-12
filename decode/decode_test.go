@@ -8,7 +8,6 @@ import (
 	"testing/iotest"
 
 	"github.com/aethiopicuschan/tsubo/decode"
-	"github.com/motemen/go-testutil/dataloc"
 	"golang.org/x/text/encoding/japanese"
 	"golang.org/x/text/transform"
 )
@@ -57,7 +56,7 @@ func TestDcode(t *testing.T) {
 		}
 
 		if got != testcase.expect {
-			t.Errorf("want %s, got %s, test case at %s", testcase.expect, got, dataloc.L(testcase.name))
+			t.Errorf("want %s, got %s, at %s", testcase.expect, got, testcase.name)
 		}
 	}
 }

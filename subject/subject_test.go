@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/aethiopicuschan/tsubo/subject"
-	"github.com/motemen/go-testutil/dataloc"
 )
 
 func assertSubject(a subject.Subject, b subject.Subject) error {
@@ -87,7 +86,7 @@ func TestNewSubject(t *testing.T) {
 		}
 
 		if err := assertSubject(testcase.expect, got); err != nil {
-			t.Errorf("%s, test case at %s", err, dataloc.L(testcase.name))
+			t.Errorf("%s, at %s", err, testcase.name)
 		}
 	}
 }
@@ -119,7 +118,7 @@ func TestIkioi(t *testing.T) {
 	for _, testcase := range testcases {
 		got := subject.Ikioi(testcase.res, testcase.time, time.Unix(testcase.now, 0))
 		if got != testcase.expect {
-			t.Errorf("want %f, got %f, test case at %s", testcase.expect, got, dataloc.L(testcase.name))
+			t.Errorf("want %f, got %f, at %s", testcase.expect, got, testcase.name)
 		}
 	}
 }

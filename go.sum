@@ -1,4 +1,2 @@
-github.com/motemen/go-testutil v0.0.0-20231011131136-b8de75e58685 h1:KvcJmQswtsHF5DATRi48scDBWVvlu5gFyfkgst4VR3Y=
-github.com/motemen/go-testutil v0.0.0-20231011131136-b8de75e58685/go.mod h1:fz3ptMGvFb+/JIPQadvSpFND5BuGi7cJka/JgG7njN8=
 golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=
 golang.org/x/text v0.3.7/go.mod h1:u+2+/6zg+i71rQMx5EYifcz6MCKuco9NR6JIITiCfzQ=
