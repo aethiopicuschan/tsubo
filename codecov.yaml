@@ -1,0 +1,6 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80% # 目標（must）数値
+        threshold: 1% # 許容比率（この例だと 79% まで許容）
