@@ -95,7 +95,7 @@ func FetchBBSMenu(ctx context.Context, do func(req *http.Request) (*http.Respons
 	var req *http.Request
 	req, err = http.NewRequestWithContext(ctx, http.MethodGet, menuURL, nil)
 	if err != nil {
-		err = errors.Join(ErrCreateBBSMenuRequest, err)
+		err = errors.Join(ErrCreateRequest, err)
 		return
 	}
 
@@ -119,7 +119,7 @@ func FetchBBSMenu(ctx context.Context, do func(req *http.Request) (*http.Respons
 	var body []byte
 	body, err = io.ReadAll(res.Body)
 	if err != nil {
-		err = errors.Join(ErrReadBBSMenuBody, err)
+		err = errors.Join(ErrReadBody, err)
 		return
 	}
 

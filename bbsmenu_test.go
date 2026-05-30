@@ -284,7 +284,7 @@ func TestFetchBBSMenuError(t *testing.T) {
 			},
 			assertion: func(t *testing.T, err error) {
 				t.Helper()
-				assert.ErrorIs(t, err, tsubo.ErrCreateBBSMenuRequest)
+				assert.ErrorIs(t, err, tsubo.ErrCreateRequest)
 			},
 		},
 		{
@@ -330,7 +330,7 @@ func TestFetchBBSMenuError(t *testing.T) {
 			},
 			assertion: func(t *testing.T, err error) {
 				t.Helper()
-				assert.ErrorIs(t, err, tsubo.ErrReadBBSMenuBody)
+				assert.ErrorIs(t, err, tsubo.ErrReadBody)
 				assert.ErrorContains(t, err, "read error")
 			},
 		},
@@ -430,14 +430,4 @@ func TestBBSMenuCategoryBoardsReturnsCopy(t *testing.T) {
 	boards[0] = tsubo.Board{}
 
 	assert.Equal(t, "Board A", category.Boards()[0].Name())
-}
-
-type errReadCloser struct{}
-
-func (errReadCloser) Read(_ []byte) (int, error) {
-	return 0, errors.New("read error")
-}
-
-func (errReadCloser) Close() error {
-	return nil
 }
