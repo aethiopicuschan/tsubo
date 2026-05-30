@@ -51,7 +51,7 @@ func ParseBBSMenuJSON(data []byte) (bm *BBSMenu, err error) {
 		}
 
 		for _, rawBoard := range rawCategory.CategoryContent {
-			board := newBoard(rawBoard.BoardName, rawBoard.URL)
+			board := NewBoard(rawBoard.BoardName, rawBoard.URL)
 			category.boards = append(category.boards, *board)
 		}
 

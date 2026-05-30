@@ -6,8 +6,8 @@ type Board struct {
 	url  string
 }
 
-// newBoard creates a new Board instance with the given name and URL.
-func newBoard(name, url string) *Board {
+// NewBoard creates a new Board instance with the given name and URL.
+func NewBoard(name, url string) *Board {
 	return &Board{
 		name: name,
 		url:  url,

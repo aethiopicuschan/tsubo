@@ -73,7 +73,7 @@ func ParseBBSMenuHTML(data []byte) (bm *BBSMenu, err error) {
 				continue
 			}
 
-			board := newBoard(name, href)
+			board := NewBoard(name, href)
 			current.boards = append(current.boards, *board)
 		}
 	}
