@@ -7,3 +7,13 @@
 [![codecov](https://codecov.io/gh/aethiopicuschan/tsubo/graph/badge.svg?token=lZECDgawoI)](https://codecov.io/gh/aethiopicuschan/tsubo)
 
 [5ch](https://itest.5ch.io/)及び5chライクな掲示板を操作するためのGolang向けライブラリ。
+
+## サポート状況
+
+- [ ] 読み込み
+  - [x] BBSMENUの取得
+  - [ ] 板のスレッド一覧の取得
+  - [ ] スレッドの取得
+- [ ] 書き込み
+  - [ ] スレッドへの書き込み
+  - [ ] スレッド作成
