@@ -15,24 +15,22 @@ func TestNewClient(t *testing.T) {
 	tests := []struct {
 		name      string
 		baseURL   string
-		options   []tsubo.Option
+		options   []tsubo.ClientOption
 		assertion func(t *testing.T, c *tsubo.Client)
 	}{
 		{
-			name:    "default client",
-			baseURL: "https://example.com",
+			name: "default client",
 			assertion: func(t *testing.T, c *tsubo.Client) {
 				t.Helper()
 
-				assert.Equal(t, "https://example.com", c.BaseURL())
 				assert.NotNil(t, c.HTTPClient())
 				assert.Equal(t, "tsubo-client", c.UserAgent())
 			},
 		},
 		{
 			name:    "with user agent",
-			baseURL: "https://example.com",
-			options: []tsubo.Option{
+			baseURL: "https://example.invalid",
+			options: []tsubo.ClientOption{
 				tsubo.WithUserAgent("custom-agent"),
 			},
 			assertion: func(t *testing.T, c *tsubo.Client) {
@@ -43,8 +41,8 @@ func TestNewClient(t *testing.T) {
 		},
 		{
 			name:    "with http client",
-			baseURL: "https://example.com",
-			options: []tsubo.Option{
+			baseURL: "https://example.invalid",
+			options: []tsubo.ClientOption{
 				tsubo.WithHTTPClient(&http.Client{}),
 			},
 			assertion: func(t *testing.T, c *tsubo.Client) {
@@ -55,8 +53,8 @@ func TestNewClient(t *testing.T) {
 		},
 		{
 			name:    "with nil http client",
-			baseURL: "https://example.com",
-			options: []tsubo.Option{
+			baseURL: "https://example.invalid",
+			options: []tsubo.ClientOption{
 				tsubo.WithHTTPClient(nil),
 			},
 			assertion: func(t *testing.T, c *tsubo.Client) {
@@ -71,7 +69,7 @@ func TestNewClient(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			c := tsubo.NewClient(tt.baseURL, tt.options...)
+			c := tsubo.NewClient(tt.options...)
 
 			require.NotNil(t, c)
 
@@ -88,23 +86,11 @@ func TestClientSettersAndGetters(t *testing.T) {
 		run  func(t *testing.T)
 	}{
 		{
-			name: "base url",
-			run: func(t *testing.T) {
-				t.Helper()
-
-				c := tsubo.NewClient("https://example.com")
-
-				c.SetBaseURL("https://example.org")
-
-				assert.Equal(t, "https://example.org", c.BaseURL())
-			},
-		},
-		{
 			name: "http client",
 			run: func(t *testing.T) {
 				t.Helper()
 
-				c := tsubo.NewClient("https://example.com")
+				c := tsubo.NewClient()
 				httpClient := &http.Client{}
 
 				c.SetHTTPClient(httpClient)
@@ -117,7 +103,7 @@ func TestClientSettersAndGetters(t *testing.T) {
 			run: func(t *testing.T) {
 				t.Helper()
 
-				c := tsubo.NewClient("https://example.com")
+				c := tsubo.NewClient()
 
 				c.SetUserAgent("custom-agent")
 
@@ -172,14 +158,13 @@ func TestClientDo(t *testing.T) {
 			}
 
 			c := tsubo.NewClient(
-				"https://example.com",
 				tsubo.WithHTTPClient(httpClient),
 				tsubo.WithUserAgent(tt.userAgent),
 			)
 
 			req, err := http.NewRequest(
 				http.MethodGet,
-				"https://example.com",
+				"https://example.invalid",
 				nil,
 			)
 			require.NoError(t, err)

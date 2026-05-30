@@ -2,20 +2,21 @@ package tsubo
 
 import "net/http"
 
+// Ensure that Client implements the HTTPClient interface.
+var _ HTTPClient = (*Client)(nil)
+
 // Client is a client for the tsubo API.
 type Client struct {
-	baseURL    string
 	httpClient *http.Client
 	userAgent  string
 }
 
 // Option is a function that configures a Client.
-type Option func(*Client)
+type ClientOption func(*Client)
 
 // NewClient creates a new Client with the given base URL and options.
-func NewClient(baseURL string, options ...Option) (c *Client) {
+func NewClient(options ...ClientOption) (c *Client) {
 	c = &Client{
-		baseURL:    baseURL,
 		httpClient: &http.Client{},
 		userAgent:  "tsubo-client",
 	}
@@ -39,11 +40,6 @@ func WithHTTPClient(httpClient *http.Client) func(*Client) {
 	}
 }
 
-// Getter for baseURL
-func (c *Client) BaseURL() string {
-	return c.baseURL
-}
-
 // Getter for httpClient
 func (c *Client) HTTPClient() *http.Client {
 	return c.httpClient
@@ -52,11 +48,6 @@ func (c *Client) HTTPClient() *http.Client {
 // Getter for userAgent
 func (c *Client) UserAgent() string {
 	return c.userAgent
-}
-
-// Setter for baseURL
-func (c *Client) SetBaseURL(baseURL string) {
-	c.baseURL = baseURL
 }
 
 // Setter for httpClient
