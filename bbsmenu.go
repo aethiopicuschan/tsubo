@@ -14,6 +14,7 @@ type BBSMenu struct {
 	lastModifiedString string
 	lastModified       int
 	description        string
+	bbsmenuURL         string
 	categories         []BBSMenuCategory
 }
 
@@ -30,6 +31,11 @@ func (bm *BBSMenu) LastModified() int {
 // Description returns the description of the BBS menu.
 func (bm *BBSMenu) Description() string {
 	return bm.description
+}
+
+// BBSMenuURL returns the URL of the BBS menu.
+func (bm *BBSMenu) BBSMenuURL() string {
+	return bm.bbsmenuURL
 }
 
 // Categories returns a copy of the list of categories in the BBS menu.
@@ -124,6 +130,7 @@ func FetchBBSMenu(ctx context.Context, do func(req *http.Request) (*http.Respons
 		err = errors.Join(ErrParseBBSMenu, err)
 		return
 	}
+	bm.bbsmenuURL = menuURL
 
 	return
 }

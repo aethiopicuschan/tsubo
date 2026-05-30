@@ -257,10 +257,10 @@ func TestFetchBBSMenu(t *testing.T) {
 
 			require.NoError(t, err)
 			require.NotNil(t, menu)
+			assert.Equal(t, tt.menuURL, menu.BBSMenuURL())
 
 			categories := menu.Categories()
 			require.Len(t, categories, 1)
-
 			assert.Equal(t, tt.wantName, categories[0].Name())
 		})
 	}
