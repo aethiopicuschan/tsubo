@@ -34,10 +34,6 @@ func WithUserAgent(userAgent string) func(*Client) {
 
 // WithHTTPClient returns an Option that sets the HTTP client of the Client.
 func WithHTTPClient(httpClient *http.Client) func(*Client) {
-	// If httpClient is nil, use the default http.Client
-	if httpClient == nil {
-		httpClient = &http.Client{}
-	}
 	return func(c *Client) {
 		c.SetHTTPClient(httpClient)
 	}
@@ -65,6 +61,10 @@ func (c *Client) SetBaseURL(baseURL string) {
 
 // Setter for httpClient
 func (c *Client) SetHTTPClient(httpClient *http.Client) {
+	// If httpClient is nil, use the default http.Client
+	if httpClient == nil {
+		httpClient = &http.Client{}
+	}
 	c.httpClient = httpClient
 }
 
