@@ -1,5 +1,10 @@
 package tsubo
 
+import (
+	"strconv"
+	"time"
+)
+
 // Thread represents a thread in a 5ch board, containing its key, title, response count, BE ID, and metadata.
 type Thread struct {
 	key      string
@@ -41,6 +46,29 @@ func (t *Thread) Metadata() []ThreadMetadata {
 	metadata := make([]ThreadMetadata, len(t.metadata))
 	copy(metadata, t.metadata)
 	return metadata
+}
+
+// Momentum returns the number of responses per day.
+//
+// The thread key is treated as the Unix timestamp when the thread was created.
+// If the key is invalid, resCount is negative, or the thread age is not positive,
+// Momentum returns 0.
+func (t *Thread) Momentum(now time.Time) float64 {
+	createdAt, err := strconv.ParseInt(t.key, 10, 64)
+	if err != nil {
+		return 0
+	}
+
+	if t.resCount < 0 {
+		return 0
+	}
+
+	age := now.Sub(time.Unix(createdAt, 0))
+	if age <= 0 {
+		return 0
+	}
+
+	return float64(t.resCount) / age.Hours() * 24
 }
 
 // Key returns the key of the thread metadata.

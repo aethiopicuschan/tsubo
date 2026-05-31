@@ -25,3 +25,14 @@ var DecodeShiftJIS = decodeShiftJIS
 var ParseSubjectTitleAndMetadata = parseSubjectTitleAndMetadata
 var ParseSubjectResCount = parseSubjectResCount
 var ParseSubjectBeID = parseSubjectBeID
+
+// == Thread ==
+func NewThreadForTest(key string, title string, resCount int, beID string, metadata []ThreadMetadata) Thread {
+	return Thread{
+		key:      key,
+		title:    title,
+		resCount: resCount,
+		beID:     beID,
+		metadata: metadata,
+	}
+}
