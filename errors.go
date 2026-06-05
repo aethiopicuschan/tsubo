@@ -20,7 +20,19 @@ var (
 	ErrUnknownBBSMenuFormat     = errors.New("unknown bbsmenu format")
 )
 
-// Board / Subject
+// Board
+var (
+	ErrCreateBoard           = errors.New("create board")
+	ErrCreateBoardURL        = errors.New("create board URL")
+	ErrFetchBoard            = errors.New("fetch board")
+	ErrFetchBoardName        = errors.New("fetch board name")
+	ErrUnexpectedBoardStatus = errors.New("unexpected board status")
+	ErrParseBoardName        = errors.New("parse board name")
+	ErrParseBoardHTML        = errors.New("parse board html")
+	ErrBoardNameNotFound     = errors.New("board name not found")
+)
+
+// Subject
 var (
 	ErrCreateSubjectURL        = errors.New("create subject URL")
 	ErrFetchSubject            = errors.New("fetch subject")
