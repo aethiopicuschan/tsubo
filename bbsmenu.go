@@ -85,12 +85,14 @@ const (
 )
 
 // FetchBBSMenu fetches the BBS menu from the specified URL using the client's HTTP method, and returns a BBSMenu instance.
+// menuURL can be in JSON or HTML format. The format will be auto-detected based on the content type and URL.
 func (c *Client) FetchBBSMenu(ctx context.Context, menuURL string) (bm *BBSMenu, err error) {
 	bm, err = FetchBBSMenu(ctx, c.Do, menuURL)
 	return
 }
 
 // FetchBBSMenu fetches the BBS menu from the specified URL using the provided HTTP client function, and returns a BBSMenu instance.
+// menuURL can be in JSON or HTML format. The format will be auto-detected based on the content type and URL.
 func FetchBBSMenu(ctx context.Context, do func(req *http.Request) (*http.Response, error), menuURL string) (bm *BBSMenu, err error) {
 	var req *http.Request
 	req, err = http.NewRequestWithContext(ctx, http.MethodGet, menuURL, nil)

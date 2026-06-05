@@ -21,6 +21,11 @@ var IsShiftJIS = isShiftJIS
 var DecodeText = decodeText
 var DecodeShiftJIS = decodeShiftJIS
 
+// == Board ==
+var BoardNameFromURL = boardNameFromURL
+var ParseBoardNameHTML = parseBoardNameHTML
+var NormalizeBoardName = normalizeBoardName
+
 // == Subject ==
 var ParseSubjectTitleAndMetadata = parseSubjectTitleAndMetadata
 var ParseSubjectResCount = parseSubjectResCount
